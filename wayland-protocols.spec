@@ -4,13 +4,18 @@
 #
 Name     : wayland-protocols
 Version  : 1.7
-Release  : 2
+Release  : 3
 URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.7.tar.xz
 Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.7.tar.xz
 Summary  : Wayland protocol files
 Group    : Development/Tools
 License  : MIT
 Requires: wayland-protocols-data
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : pkgconfig(wayland-scanner)
 
 %description
@@ -40,14 +45,35 @@ Provides: wayland-protocols-devel
 dev components for the wayland-protocols package.
 
 
+%package dev32
+Summary: dev32 components for the wayland-protocols package.
+Group: Default
+Requires: wayland-protocols-data
+Requires: wayland-protocols-dev
+
+%description dev32
+dev32 components for the wayland-protocols package.
+
+
 %prep
 %setup -q -n wayland-protocols-1.7
+pushd ..
+cp -a wayland-protocols-1.7 build32
+popd
 
 %build
 export LANG=C
 %configure --disable-static
 make V=1  %{?_smp_mflags}
 
+pushd ../build32/
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export CFLAGS="$CFLAGS -m32"
+export CXXFLAGS="$CXXFLAGS -m32"
+export LDFLAGS="$LDFLAGS -m32"
+%configure --disable-static   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make V=1  %{?_smp_mflags}
+popd
 %check
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
@@ -57,6 +83,15 @@ make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
 rm -rf %{buildroot}
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 %make_install
 
 %files
@@ -83,3 +118,8 @@ rm -rf %{buildroot}
 %files dev
 %defattr(-,root,root,-)
 /usr/lib64/pkgconfig/wayland-protocols.pc
+
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/pkgconfig/32wayland-protocols.pc
+/usr/lib32/pkgconfig/wayland-protocols.pc
