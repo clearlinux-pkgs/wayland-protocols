@@ -4,7 +4,7 @@
 #
 Name     : wayland-protocols
 Version  : 1.7
-Release  : 1
+Release  : 2
 URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.7.tar.xz
 Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.7.tar.xz
 Summary  : Wayland protocol files
@@ -82,4 +82,4 @@ rm -rf %{buildroot}
 
 %files dev
 %defattr(-,root,root,-)
-/usr/lib64/pkgconfig/*.pc
+/usr/lib64/pkgconfig/wayland-protocols.pc
