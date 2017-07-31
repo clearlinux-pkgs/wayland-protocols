@@ -5,12 +5,12 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.9
-Release  : 7
-URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.9.tar.xz
-Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.9.tar.xz
-Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.9.tar.xz.sig
-Summary  : Wayland protocol files (not installed)
+Version  : 1.10
+Release  : 8
+URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.10.tar.xz
+Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.10.tar.xz
+Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.10.tar.xz.sig
+Summary  : Wayland protocol files
 Group    : Development/Tools
 License  : MIT
 Requires: wayland-protocols-data
@@ -59,9 +59,9 @@ dev32 components for the wayland-protocols package.
 
 
 %prep
-%setup -q -n wayland-protocols-1.9
+%setup -q -n wayland-protocols-1.10
 pushd ..
-cp -a wayland-protocols-1.9 build32
+cp -a wayland-protocols-1.10 build32
 popd
 
 %build
@@ -69,7 +69,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1499762966
+export SOURCE_DATE_EPOCH=1501527614
 %configure --disable-static
 make V=1  %{?_smp_mflags}
 
@@ -89,7 +89,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1499762966
+export SOURCE_DATE_EPOCH=1501527614
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -121,6 +121,7 @@ popd
 /usr/share/wayland-protocols/unstable/tablet/tablet-unstable-v2.xml
 /usr/share/wayland-protocols/unstable/text-input/text-input-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/xdg-foreign/xdg-foreign-unstable-v1.xml
+/usr/share/wayland-protocols/unstable/xdg-output/xdg-output-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/xdg-shell/xdg-shell-unstable-v5.xml
 /usr/share/wayland-protocols/unstable/xdg-shell/xdg-shell-unstable-v6.xml
 /usr/share/wayland-protocols/unstable/xwayland-keyboard-grab/xwayland-keyboard-grab-unstable-v1.xml
