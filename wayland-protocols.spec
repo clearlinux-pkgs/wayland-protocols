@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.12
-Release  : 11
-URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.12.tar.xz
-Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.12.tar.xz
-Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.12.tar.xz.sig
+Version  : 1.13
+Release  : 12
+URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.13.tar.xz
+Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.13.tar.xz
+Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.13.tar.xz.sig
 Summary  : Wayland protocol files
 Group    : Development/Tools
 License  : MIT
@@ -59,9 +59,9 @@ dev32 components for the wayland-protocols package.
 
 
 %prep
-%setup -q -n wayland-protocols-1.12
+%setup -q -n wayland-protocols-1.13
 pushd ..
-cp -a wayland-protocols-1.12 build32
+cp -a wayland-protocols-1.13 build32
 popd
 
 %build
@@ -69,9 +69,9 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1512436578
+export SOURCE_DATE_EPOCH=1518621244
 %configure --disable-static
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
@@ -79,7 +79,7 @@ export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
 export LDFLAGS="$LDFLAGS -m32"
 %configure --disable-static    --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 popd
 %check
 export LANG=C
@@ -89,7 +89,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1512436578
+export SOURCE_DATE_EPOCH=1518621244
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -113,6 +113,7 @@ popd
 /usr/share/wayland-protocols/unstable/fullscreen-shell/fullscreen-shell-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/idle-inhibit/idle-inhibit-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/input-method/input-method-unstable-v1.xml
+/usr/share/wayland-protocols/unstable/input-timestamps/input-timestamps-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/keyboard-shortcuts-inhibit/keyboard-shortcuts-inhibit-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/pointer-constraints/pointer-constraints-unstable-v1.xml
