@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.13
-Release  : 12
-URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.13.tar.xz
-Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.13.tar.xz
-Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.13.tar.xz.sig
+Version  : 1.14
+Release  : 13
+URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.14.tar.xz
+Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.14.tar.xz
+Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.14.tar.xz.sig
 Summary  : Wayland protocol files
 Group    : Development/Tools
 License  : MIT
@@ -59,9 +59,9 @@ dev32 components for the wayland-protocols package.
 
 
 %prep
-%setup -q -n wayland-protocols-1.13
+%setup -q -n wayland-protocols-1.14
 pushd ..
-cp -a wayland-protocols-1.13 build32
+cp -a wayland-protocols-1.14 build32
 popd
 
 %build
@@ -69,7 +69,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1518621244
+export SOURCE_DATE_EPOCH=1525746444
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -89,7 +89,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1518621244
+export SOURCE_DATE_EPOCH=1525746444
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
