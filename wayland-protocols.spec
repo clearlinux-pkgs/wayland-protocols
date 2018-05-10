@@ -6,7 +6,7 @@
 #
 Name     : wayland-protocols
 Version  : 1.14
-Release  : 13
+Release  : 14
 URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.14.tar.xz
 Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.14.tar.xz
 Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.14.tar.xz.sig
