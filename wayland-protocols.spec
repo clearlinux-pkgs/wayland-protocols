@@ -5,16 +5,16 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.16
-Release  : 15
-URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.16.tar.xz
-Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.16.tar.xz
-Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.16.tar.xz.sig
+Version  : 1.17
+Release  : 16
+URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.17.tar.xz
+Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.17.tar.xz
+Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.17.tar.xz.sig
 Summary  : Wayland protocol files
 Group    : Development/Tools
 License  : MIT
-Requires: wayland-protocols-license
-Requires: wayland-protocols-data
+Requires: wayland-protocols-data = %{version}-%{release}
+Requires: wayland-protocols-license = %{version}-%{release}
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -42,8 +42,8 @@ data components for the wayland-protocols package.
 %package dev
 Summary: dev components for the wayland-protocols package.
 Group: Development
-Requires: wayland-protocols-data
-Provides: wayland-protocols-devel
+Requires: wayland-protocols-data = %{version}-%{release}
+Provides: wayland-protocols-devel = %{version}-%{release}
 
 %description dev
 dev components for the wayland-protocols package.
@@ -52,8 +52,8 @@ dev components for the wayland-protocols package.
 %package dev32
 Summary: dev32 components for the wayland-protocols package.
 Group: Default
-Requires: wayland-protocols-data
-Requires: wayland-protocols-dev
+Requires: wayland-protocols-data = %{version}-%{release}
+Requires: wayland-protocols-dev = %{version}-%{release}
 
 %description dev32
 dev32 components for the wayland-protocols package.
@@ -68,9 +68,9 @@ license components for the wayland-protocols package.
 
 
 %prep
-%setup -q -n wayland-protocols-1.16
+%setup -q -n wayland-protocols-1.17
 pushd ..
-cp -a wayland-protocols-1.16 build32
+cp -a wayland-protocols-1.17 build32
 popd
 
 %build
@@ -78,15 +78,16 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1536125795
+export SOURCE_DATE_EPOCH=1546884241
 %configure --disable-static
 make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-export LDFLAGS="$LDFLAGS -m32"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 %configure --disable-static    --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
@@ -96,12 +97,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
+cd ../build32;
+make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1536125795
+export SOURCE_DATE_EPOCH=1546884241
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/wayland-protocols
-cp COPYING %{buildroot}/usr/share/doc/wayland-protocols/COPYING
+mkdir -p %{buildroot}/usr/share/package-licenses/wayland-protocols
+cp COPYING %{buildroot}/usr/share/package-licenses/wayland-protocols/COPYING
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -127,8 +130,10 @@ popd
 /usr/share/wayland-protocols/unstable/input-timestamps/input-timestamps-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/keyboard-shortcuts-inhibit/keyboard-shortcuts-inhibit-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml
+/usr/share/wayland-protocols/unstable/linux-explicit-synchronization/linux-explicit-synchronization-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/pointer-constraints/pointer-constraints-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/pointer-gestures/pointer-gestures-unstable-v1.xml
+/usr/share/wayland-protocols/unstable/primary-selection/primary-selection-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/relative-pointer/relative-pointer-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/tablet/tablet-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/tablet/tablet-unstable-v2.xml
@@ -152,5 +157,5 @@ popd
 /usr/lib32/pkgconfig/wayland-protocols.pc
 
 %files license
-%defattr(-,root,root,-)
-/usr/share/doc/wayland-protocols/COPYING
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/wayland-protocols/COPYING
