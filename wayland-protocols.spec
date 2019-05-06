@@ -6,11 +6,11 @@
 #
 Name     : wayland-protocols
 Version  : 1.17
-Release  : 16
+Release  : 17
 URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.17.tar.xz
 Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.17.tar.xz
 Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.17.tar.xz.sig
-Summary  : Wayland protocol files
+Summary  : Specifications of extended Wayland protocols
 Group    : Development/Tools
 License  : MIT
 Requires: wayland-protocols-data = %{version}-%{release}
@@ -44,6 +44,7 @@ Summary: dev components for the wayland-protocols package.
 Group: Development
 Requires: wayland-protocols-data = %{version}-%{release}
 Provides: wayland-protocols-devel = %{version}-%{release}
+Requires: wayland-protocols = %{version}-%{release}
 
 %description dev
 dev components for the wayland-protocols package.
@@ -78,7 +79,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546884241
+export SOURCE_DATE_EPOCH=1557101401
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -101,7 +109,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1546884241
+export SOURCE_DATE_EPOCH=1557101401
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wayland-protocols
 cp COPYING %{buildroot}/usr/share/package-licenses/wayland-protocols/COPYING
