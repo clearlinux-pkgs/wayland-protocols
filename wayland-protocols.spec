@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.17
-Release  : 17
-URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.17.tar.xz
-Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.17.tar.xz
-Source99 : https://wayland.freedesktop.org/releases/wayland-protocols-1.17.tar.xz.sig
+Version  : 1.18
+Release  : 18
+URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.18.tar.xz
+Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.18.tar.xz
+Source1 : https://wayland.freedesktop.org/releases/wayland-protocols-1.18.tar.xz.sig
 Summary  : Specifications of extended Wayland protocols
 Group    : Development/Tools
 License  : MIT
@@ -45,6 +45,7 @@ Group: Development
 Requires: wayland-protocols-data = %{version}-%{release}
 Provides: wayland-protocols-devel = %{version}-%{release}
 Requires: wayland-protocols = %{version}-%{release}
+Requires: wayland-protocols = %{version}-%{release}
 
 %description dev
 dev components for the wayland-protocols package.
@@ -69,17 +70,19 @@ license components for the wayland-protocols package.
 
 
 %prep
-%setup -q -n wayland-protocols-1.17
+%setup -q -n wayland-protocols-1.18
 pushd ..
-cp -a wayland-protocols-1.17 build32
+cp -a wayland-protocols-1.18 build32
 popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1557101401
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1567895165
+# -Werror is for werrorists
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -93,14 +96,14 @@ make  %{?_smp_mflags}
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure --disable-static    --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -109,7 +112,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1557101401
+export SOURCE_DATE_EPOCH=1567895165
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wayland-protocols
 cp COPYING %{buildroot}/usr/share/package-licenses/wayland-protocols/COPYING
