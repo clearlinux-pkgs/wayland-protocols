@@ -1,5 +1,5 @@
 PKG_NAME := wayland-protocols
-URL = https://wayland.freedesktop.org/releases/wayland-protocols-1.18.tar.xz
+URL = https://wayland.freedesktop.org/releases/wayland-protocols-1.20.tar.xz
 ARCHIVES = 
 
 include ../common/Makefile.common

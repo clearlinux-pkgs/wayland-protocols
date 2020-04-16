@@ -5,12 +5,12 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.18
-Release  : 18
-URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.18.tar.xz
-Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.18.tar.xz
-Source1 : https://wayland.freedesktop.org/releases/wayland-protocols-1.18.tar.xz.sig
-Summary  : Specifications of extended Wayland protocols
+Version  : 1.20
+Release  : 19
+URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.20.tar.xz
+Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.20.tar.xz
+Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.20.tar.xz.sig
+Summary  : Wayland protocol files
 Group    : Development/Tools
 License  : MIT
 Requires: wayland-protocols-data = %{version}-%{release}
@@ -23,13 +23,8 @@ BuildRequires : glibc-libc32
 BuildRequires : pkgconfig(wayland-scanner)
 
 %description
-Wayland protocols
------------------
-wayland-protocols contains Wayland protocols that add functionality not
-available in the Wayland core protocol. Such protocols either add
-completely new functionality, or extend the functionality of some other
-protocol either in Wayland core, or some other protocol in
-wayland-protocols.
+Viewporter: cropping and scaling extension for surface contents
+Previously known as wl_scaler.
 
 %package data
 Summary: data components for the wayland-protocols package.
@@ -44,7 +39,6 @@ Summary: dev components for the wayland-protocols package.
 Group: Development
 Requires: wayland-protocols-data = %{version}-%{release}
 Provides: wayland-protocols-devel = %{version}-%{release}
-Requires: wayland-protocols = %{version}-%{release}
 Requires: wayland-protocols = %{version}-%{release}
 
 %description dev
@@ -70,9 +64,10 @@ license components for the wayland-protocols package.
 
 
 %prep
-%setup -q -n wayland-protocols-1.18
+%setup -q -n wayland-protocols-1.20
+cd %{_builddir}/wayland-protocols-1.20
 pushd ..
-cp -a wayland-protocols-1.18 build32
+cp -a wayland-protocols-1.20 build32
 popd
 
 %build
@@ -80,15 +75,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567895165
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1587049025
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -112,10 +106,10 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1567895165
+export SOURCE_DATE_EPOCH=1587049025
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wayland-protocols
-cp COPYING %{buildroot}/usr/share/package-licenses/wayland-protocols/COPYING
+cp %{_builddir}/wayland-protocols-1.20/COPYING %{buildroot}/usr/share/package-licenses/wayland-protocols/9d823228bce4c6977989fdd7b58026cd62fc55e0
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -169,4 +163,4 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/wayland-protocols/COPYING
+/usr/share/package-licenses/wayland-protocols/9d823228bce4c6977989fdd7b58026cd62fc55e0
