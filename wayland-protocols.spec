@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.21
-Release  : 20
-URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.21.tar.xz
-Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.21.tar.xz
-Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.21.tar.xz.sig
+Version  : 1.23
+Release  : 21
+URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
+Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
+Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz.sig
 Summary  : Wayland protocol files
 Group    : Development/Tools
 License  : MIT
@@ -22,10 +22,13 @@ BuildRequires : gcc-libstdc++32
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : pkgconfig(wayland-scanner)
+BuildRequires : wayland-dev
+BuildRequires : wayland-dev32
 
 %description
-Viewporter: cropping and scaling extension for surface contents
-Previously known as wl_scaler.
+Xwayland keyboard grabbing protocol
+Maintainers:
+Olivier Fourdan <ofourdan@redhat.com>
 
 %package data
 Summary: data components for the wayland-protocols package.
@@ -33,27 +36,6 @@ Group: Data
 
 %description data
 data components for the wayland-protocols package.
-
-
-%package dev
-Summary: dev components for the wayland-protocols package.
-Group: Development
-Requires: wayland-protocols-data = %{version}-%{release}
-Provides: wayland-protocols-devel = %{version}-%{release}
-Requires: wayland-protocols = %{version}-%{release}
-
-%description dev
-dev components for the wayland-protocols package.
-
-
-%package dev32
-Summary: dev32 components for the wayland-protocols package.
-Group: Default
-Requires: wayland-protocols-data = %{version}-%{release}
-Requires: wayland-protocols-dev = %{version}-%{release}
-
-%description dev32
-dev32 components for the wayland-protocols package.
 
 
 %package license
@@ -65,10 +47,10 @@ license components for the wayland-protocols package.
 
 
 %prep
-%setup -q -n wayland-protocols-1.21
-cd %{_builddir}/wayland-protocols-1.21
+%setup -q -n wayland-protocols-1.23
+cd %{_builddir}/wayland-protocols-1.23
 pushd ..
-cp -a wayland-protocols-1.21 build32
+cp -a wayland-protocols-1.23 build32
 popd
 
 %build
@@ -76,43 +58,41 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1620229470
+export SOURCE_DATE_EPOCH=1632154162
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
-%configure --disable-static
-make  %{?_smp_mflags}
-
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
+CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddir
+ninja -v -C builddir
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-%configure --disable-static    --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
-make  %{?_smp_mflags}
+meson --libdir=lib32 --prefix=/usr --buildtype=plain   builddir
+ninja -v -C builddir
 popd
+
 %check
 export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make %{?_smp_mflags} check
+meson test -C builddir
 cd ../build32;
-make %{?_smp_mflags} check || :
+meson test -C builddir || :
 
 %install
-export SOURCE_DATE_EPOCH=1620229470
-rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wayland-protocols
-cp %{_builddir}/wayland-protocols-1.21/COPYING %{buildroot}/usr/share/package-licenses/wayland-protocols/9d823228bce4c6977989fdd7b58026cd62fc55e0
+cp %{_builddir}/wayland-protocols-1.23/COPYING %{buildroot}/usr/share/package-licenses/wayland-protocols/9d823228bce4c6977989fdd7b58026cd62fc55e0
 pushd ../build32/
-%make_install32
+DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
@@ -120,16 +100,18 @@ for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
 popd
-%make_install
+DESTDIR=%{buildroot} ninja -C builddir install
 
 %files
 %defattr(-,root,root,-)
 
 %files data
 %defattr(-,root,root,-)
+/usr/share/pkgconfig/wayland-protocols.pc
 /usr/share/wayland-protocols/stable/presentation-time/presentation-time.xml
 /usr/share/wayland-protocols/stable/viewporter/viewporter.xml
 /usr/share/wayland-protocols/stable/xdg-shell/xdg-shell.xml
+/usr/share/wayland-protocols/staging/drm-lease/drm-lease-v1.xml
 /usr/share/wayland-protocols/staging/xdg-activation/xdg-activation-v1.xml
 /usr/share/wayland-protocols/unstable/fullscreen-shell/fullscreen-shell-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/idle-inhibit/idle-inhibit-unstable-v1.xml
@@ -153,15 +135,6 @@ popd
 /usr/share/wayland-protocols/unstable/xdg-shell/xdg-shell-unstable-v5.xml
 /usr/share/wayland-protocols/unstable/xdg-shell/xdg-shell-unstable-v6.xml
 /usr/share/wayland-protocols/unstable/xwayland-keyboard-grab/xwayland-keyboard-grab-unstable-v1.xml
-
-%files dev
-%defattr(-,root,root,-)
-/usr/lib64/pkgconfig/wayland-protocols.pc
-
-%files dev32
-%defattr(-,root,root,-)
-/usr/lib32/pkgconfig/32wayland-protocols.pc
-/usr/lib32/pkgconfig/wayland-protocols.pc
 
 %files license
 %defattr(0644,root,root,0755)
