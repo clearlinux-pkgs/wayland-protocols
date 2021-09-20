@@ -6,7 +6,7 @@
 #
 Name     : wayland-protocols
 Version  : 1.23
-Release  : 22
+Release  : 23
 URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
 Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
 Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz.sig
@@ -38,6 +38,17 @@ Group: Data
 data components for the wayland-protocols package.
 
 
+%package dev
+Summary: dev components for the wayland-protocols package.
+Group: Development
+Requires: wayland-protocols-data = %{version}-%{release}
+Provides: wayland-protocols-devel = %{version}-%{release}
+Requires: wayland-protocols = %{version}-%{release}
+
+%description dev
+dev components for the wayland-protocols package.
+
+
 %package license
 Summary: license components for the wayland-protocols package.
 Group: Default
@@ -58,7 +69,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1632161095
+export SOURCE_DATE_EPOCH=1632163025
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -107,7 +118,6 @@ DESTDIR=%{buildroot} ninja -C builddir install
 
 %files data
 %defattr(-,root,root,-)
-/usr/share/pkgconfig/wayland-protocols.pc
 /usr/share/wayland-protocols/stable/presentation-time/presentation-time.xml
 /usr/share/wayland-protocols/stable/viewporter/viewporter.xml
 /usr/share/wayland-protocols/stable/xdg-shell/xdg-shell.xml
@@ -135,6 +145,10 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/wayland-protocols/unstable/xdg-shell/xdg-shell-unstable-v5.xml
 /usr/share/wayland-protocols/unstable/xdg-shell/xdg-shell-unstable-v6.xml
 /usr/share/wayland-protocols/unstable/xwayland-keyboard-grab/xwayland-keyboard-grab-unstable-v1.xml
+
+%files dev
+%defattr(-,root,root,-)
+/usr/share/pkgconfig/wayland-protocols.pc
 
 %files license
 %defattr(0644,root,root,0755)
