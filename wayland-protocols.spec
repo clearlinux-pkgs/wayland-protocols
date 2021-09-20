@@ -6,7 +6,7 @@
 #
 Name     : wayland-protocols
 Version  : 1.23
-Release  : 21
+Release  : 22
 URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
 Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
 Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz.sig
@@ -58,7 +58,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1632154162
+export SOURCE_DATE_EPOCH=1632161095
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
