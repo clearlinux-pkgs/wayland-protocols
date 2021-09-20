@@ -6,7 +6,7 @@
 #
 Name     : wayland-protocols
 Version  : 1.23
-Release  : 23
+Release  : 24
 URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
 Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
 Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz.sig
@@ -49,6 +49,16 @@ Requires: wayland-protocols = %{version}-%{release}
 dev components for the wayland-protocols package.
 
 
+%package dev32
+Summary: dev32 components for the wayland-protocols package.
+Group: Default
+Requires: wayland-protocols-data = %{version}-%{release}
+Requires: wayland-protocols-dev = %{version}-%{release}
+
+%description dev32
+dev32 components for the wayland-protocols package.
+
+
 %package license
 Summary: license components for the wayland-protocols package.
 Group: Default
@@ -69,7 +79,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1632163025
+export SOURCE_DATE_EPOCH=1632164438
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -107,6 +117,12 @@ DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
@@ -149,6 +165,10 @@ DESTDIR=%{buildroot} ninja -C builddir install
 %files dev
 %defattr(-,root,root,-)
 /usr/share/pkgconfig/wayland-protocols.pc
+
+%files dev32
+%defattr(-,root,root,-)
+/usr/share/pkgconfig/32wayland-protocols.pc
 
 %files license
 %defattr(0644,root,root,0755)
