@@ -6,7 +6,7 @@
 #
 Name     : wayland-protocols
 Version  : 1.23
-Release  : 24
+Release  : 25
 URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
 Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
 Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz.sig
@@ -16,14 +16,8 @@ License  : MIT
 Requires: wayland-protocols-data = %{version}-%{release}
 Requires: wayland-protocols-license = %{version}-%{release}
 BuildRequires : buildreq-meson
-BuildRequires : gcc-dev32
-BuildRequires : gcc-libgcc32
-BuildRequires : gcc-libstdc++32
-BuildRequires : glibc-dev32
-BuildRequires : glibc-libc32
 BuildRequires : pkgconfig(wayland-scanner)
 BuildRequires : wayland-dev
-BuildRequires : wayland-dev32
 
 %description
 Xwayland keyboard grabbing protocol
@@ -49,16 +43,6 @@ Requires: wayland-protocols = %{version}-%{release}
 dev components for the wayland-protocols package.
 
 
-%package dev32
-Summary: dev32 components for the wayland-protocols package.
-Group: Default
-Requires: wayland-protocols-data = %{version}-%{release}
-Requires: wayland-protocols-dev = %{version}-%{release}
-
-%description dev32
-dev32 components for the wayland-protocols package.
-
-
 %package license
 Summary: license components for the wayland-protocols package.
 Group: Default
@@ -70,16 +54,13 @@ license components for the wayland-protocols package.
 %prep
 %setup -q -n wayland-protocols-1.23
 cd %{_builddir}/wayland-protocols-1.23
-pushd ..
-cp -a wayland-protocols-1.23 build32
-popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1632164438
+export SOURCE_DATE_EPOCH=1642545802
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -90,43 +71,17 @@ export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddir
 ninja -v -C builddir
-pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-meson --libdir=lib32 --prefix=/usr --buildtype=plain   builddir
-ninja -v -C builddir
-popd
 
 %check
 export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-meson test -C builddir
-cd ../build32;
-meson test -C builddir || :
+meson test -C builddir --print-errorlogs
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/wayland-protocols
 cp %{_builddir}/wayland-protocols-1.23/COPYING %{buildroot}/usr/share/package-licenses/wayland-protocols/9d823228bce4c6977989fdd7b58026cd62fc55e0
-pushd ../build32/
-DESTDIR=%{buildroot} ninja -C builddir install
-if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
-then
-pushd %{buildroot}/usr/lib32/pkgconfig
-for i in *.pc ; do ln -s $i 32$i ; done
-popd
-fi
-if [ -d %{buildroot}/usr/share/pkgconfig ]
-then
-pushd %{buildroot}/usr/share/pkgconfig
-for i in *.pc ; do ln -s $i 32$i ; done
-popd
-fi
-popd
 DESTDIR=%{buildroot} ninja -C builddir install
 
 %files
@@ -165,10 +120,6 @@ DESTDIR=%{buildroot} ninja -C builddir install
 %files dev
 %defattr(-,root,root,-)
 /usr/share/pkgconfig/wayland-protocols.pc
-
-%files dev32
-%defattr(-,root,root,-)
-/usr/share/pkgconfig/32wayland-protocols.pc
 
 %files license
 %defattr(0644,root,root,0755)
