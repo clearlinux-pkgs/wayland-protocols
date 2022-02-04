@@ -5,18 +5,17 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.23
-Release  : 25
-URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
-Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz
-Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.23.tar.xz.sig
+Version  : 1.25
+Release  : 26
+URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.25.tar.xz
+Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.25.tar.xz
+Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.25.tar.xz.sig
 Summary  : Wayland protocol files
 Group    : Development/Tools
 License  : MIT
 Requires: wayland-protocols-data = %{version}-%{release}
 Requires: wayland-protocols-license = %{version}-%{release}
 BuildRequires : buildreq-meson
-BuildRequires : pkgconfig(wayland-scanner)
 BuildRequires : wayland-dev
 
 %description
@@ -52,15 +51,15 @@ license components for the wayland-protocols package.
 
 
 %prep
-%setup -q -n wayland-protocols-1.23
-cd %{_builddir}/wayland-protocols-1.23
+%setup -q -n wayland-protocols-1.25
+cd %{_builddir}/wayland-protocols-1.25
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1642545802
+export SOURCE_DATE_EPOCH=1643993835
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -81,7 +80,7 @@ meson test -C builddir --print-errorlogs
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/wayland-protocols
-cp %{_builddir}/wayland-protocols-1.23/COPYING %{buildroot}/usr/share/package-licenses/wayland-protocols/9d823228bce4c6977989fdd7b58026cd62fc55e0
+cp %{_builddir}/wayland-protocols-1.25/COPYING %{buildroot}/usr/share/package-licenses/wayland-protocols/9d823228bce4c6977989fdd7b58026cd62fc55e0
 DESTDIR=%{buildroot} ninja -C builddir install
 
 %files
@@ -93,6 +92,7 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/wayland-protocols/stable/viewporter/viewporter.xml
 /usr/share/wayland-protocols/stable/xdg-shell/xdg-shell.xml
 /usr/share/wayland-protocols/staging/drm-lease/drm-lease-v1.xml
+/usr/share/wayland-protocols/staging/ext-session-lock/ext-session-lock-v1.xml
 /usr/share/wayland-protocols/staging/xdg-activation/xdg-activation-v1.xml
 /usr/share/wayland-protocols/unstable/fullscreen-shell/fullscreen-shell-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/idle-inhibit/idle-inhibit-unstable-v1.xml
