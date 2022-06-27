@@ -6,7 +6,7 @@
 #
 Name     : wayland-protocols
 Version  : 1.25
-Release  : 27
+Release  : 28
 URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.25.tar.xz
 Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.25.tar.xz
 Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.25.tar.xz.sig
@@ -72,13 +72,16 @@ cd %{_builddir}/wayland-protocols-1.25
 pushd ..
 cp -a wayland-protocols-1.25 build32
 popd
+pushd ..
+cp -a wayland-protocols-1.25 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1643995310
+export SOURCE_DATE_EPOCH=1656347842
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -89,6 +92,8 @@ export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddir
 ninja -v -C builddir
+CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 -O3" CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 " LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddiravx2
+ninja -v -C builddiravx2
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
@@ -126,7 +131,9 @@ for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
 popd
+DESTDIR=%{buildroot}-v3 ninja -C builddiravx2 install
 DESTDIR=%{buildroot} ninja -C builddir install
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
