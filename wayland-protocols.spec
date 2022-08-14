@@ -6,7 +6,7 @@
 #
 Name     : wayland-protocols
 Version  : 1.26
-Release  : 30
+Release  : 31
 URL      : https://wayland.freedesktop.org/releases/wayland-protocols-1.26.tar.xz
 Source0  : https://wayland.freedesktop.org/releases/wayland-protocols-1.26.tar.xz
 Source1  : https://wayland.freedesktop.org/releases/wayland-protocols-1.26.tar.xz.sig
