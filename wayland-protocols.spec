@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.27
-Release  : 34
-URL      : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.27/downloads/wayland-protocols-1.27.tar.xz
-Source0  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.27/downloads/wayland-protocols-1.27.tar.xz
-Source1  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.27/downloads/wayland-protocols-1.27.tar.xz.sig
+Version  : 1.28
+Release  : 35
+URL      : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.28/downloads/wayland-protocols-1.28.tar.xz
+Source0  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.28/downloads/wayland-protocols-1.28.tar.xz
+Source1  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.28/downloads/wayland-protocols-1.28.tar.xz.sig
 Summary  : Wayland protocol files
 Group    : Development/Tools
 License  : MIT
@@ -67,13 +67,13 @@ license components for the wayland-protocols package.
 
 
 %prep
-%setup -q -n wayland-protocols-1.27
-cd %{_builddir}/wayland-protocols-1.27
+%setup -q -n wayland-protocols-1.28
+cd %{_builddir}/wayland-protocols-1.28
 pushd ..
-cp -a wayland-protocols-1.27 build32
+cp -a wayland-protocols-1.28 build32
 popd
 pushd ..
-cp -a wayland-protocols-1.27 buildavx2
+cp -a wayland-protocols-1.28 buildavx2
 popd
 
 %build
@@ -81,7 +81,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1665427311
+export SOURCE_DATE_EPOCH=1667581796
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -149,6 +149,7 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/wayland-protocols/staging/ext-session-lock/ext-session-lock-v1.xml
 /usr/share/wayland-protocols/staging/single-pixel-buffer/single-pixel-buffer-v1.xml
 /usr/share/wayland-protocols/staging/xdg-activation/xdg-activation-v1.xml
+/usr/share/wayland-protocols/staging/xwayland-shell/xwayland-shell-v1.xml
 /usr/share/wayland-protocols/unstable/fullscreen-shell/fullscreen-shell-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/idle-inhibit/idle-inhibit-unstable-v1.xml
 /usr/share/wayland-protocols/unstable/input-method/input-method-unstable-v1.xml
