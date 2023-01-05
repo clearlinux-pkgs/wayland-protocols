@@ -6,7 +6,7 @@
 #
 Name     : wayland-protocols
 Version  : 1.31
-Release  : 37
+Release  : 38
 URL      : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.31/downloads/wayland-protocols-1.31.tar.xz
 Source0  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.31/downloads/wayland-protocols-1.31.tar.xz
 Source1  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.31/downloads/wayland-protocols-1.31.tar.xz.sig
