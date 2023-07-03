@@ -6,11 +6,11 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.31
-Release  : 39
-URL      : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.31/downloads/wayland-protocols-1.31.tar.xz
-Source0  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.31/downloads/wayland-protocols-1.31.tar.xz
-Source1  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.31/downloads/wayland-protocols-1.31.tar.xz.sig
+Version  : 1.32
+Release  : 40
+URL      : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.32/downloads/wayland-protocols-1.32.tar.xz
+Source0  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.32/downloads/wayland-protocols-1.32.tar.xz
+Source1  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.32/downloads/wayland-protocols-1.32.tar.xz.sig
 Summary  : Wayland protocol files
 Group    : Development/Tools
 License  : MIT
@@ -71,13 +71,13 @@ license components for the wayland-protocols package.
 
 
 %prep
-%setup -q -n wayland-protocols-1.31
-cd %{_builddir}/wayland-protocols-1.31
+%setup -q -n wayland-protocols-1.32
+cd %{_builddir}/wayland-protocols-1.32
 pushd ..
-cp -a wayland-protocols-1.31 build32
+cp -a wayland-protocols-1.32 build32
 popd
 pushd ..
-cp -a wayland-protocols-1.31 buildavx2
+cp -a wayland-protocols-1.32 buildavx2
 popd
 
 %build
@@ -85,7 +85,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1683241408
+export SOURCE_DATE_EPOCH=1688417822
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -148,10 +148,13 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/wayland-protocols/stable/viewporter/viewporter.xml
 /usr/share/wayland-protocols/stable/xdg-shell/xdg-shell.xml
 /usr/share/wayland-protocols/staging/content-type/content-type-v1.xml
+/usr/share/wayland-protocols/staging/cursor-shape/cursor-shape-v1.xml
 /usr/share/wayland-protocols/staging/drm-lease/drm-lease-v1.xml
+/usr/share/wayland-protocols/staging/ext-foreign-toplevel-list/ext-foreign-toplevel-list-v1.xml
 /usr/share/wayland-protocols/staging/ext-idle-notify/ext-idle-notify-v1.xml
 /usr/share/wayland-protocols/staging/ext-session-lock/ext-session-lock-v1.xml
 /usr/share/wayland-protocols/staging/fractional-scale/fractional-scale-v1.xml
+/usr/share/wayland-protocols/staging/security-context/security-context-v1.xml
 /usr/share/wayland-protocols/staging/single-pixel-buffer/single-pixel-buffer-v1.xml
 /usr/share/wayland-protocols/staging/tearing-control/tearing-control-v1.xml
 /usr/share/wayland-protocols/staging/xdg-activation/xdg-activation-v1.xml
