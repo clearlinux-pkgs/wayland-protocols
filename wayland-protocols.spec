@@ -8,11 +8,11 @@
 # Source0 file verified with key 0xA6EEEC9E0136164A (jadahl@gmail.com)
 #
 Name     : wayland-protocols
-Version  : 1.35
-Release  : 43
-URL      : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.35/downloads/wayland-protocols-1.35.tar.xz
-Source0  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.35/downloads/wayland-protocols-1.35.tar.xz
-Source1  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.35/downloads/wayland-protocols-1.35.tar.xz.sig
+Version  : 1.36
+Release  : 44
+URL      : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.36/downloads/wayland-protocols-1.36.tar.xz
+Source0  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.36/downloads/wayland-protocols-1.36.tar.xz
+Source1  : https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.36/downloads/wayland-protocols-1.36.tar.xz.sig
 Source2  : A6EEEC9E0136164A.pkey
 Summary  : Wayland protocol files
 Group    : Development/Tools
@@ -81,13 +81,13 @@ chmod 700 .gnupg
 gpg --homedir .gnupg --import %{SOURCE2}
 gpg --homedir .gnupg --status-fd 1 --verify %{SOURCE1} %{SOURCE0} > gpg.status
 grep -E '^\[GNUPG:\] (GOODSIG|EXPKEYSIG) A6EEEC9E0136164A' gpg.status
-%setup -q -n wayland-protocols-1.35
-cd %{_builddir}/wayland-protocols-1.35
+%setup -q -n wayland-protocols-1.36
+cd %{_builddir}/wayland-protocols-1.36
 pushd ..
-cp -a wayland-protocols-1.35 build32
+cp -a wayland-protocols-1.36 build32
 popd
 pushd ..
-cp -a wayland-protocols-1.35 buildavx2
+cp -a wayland-protocols-1.36 buildavx2
 popd
 
 %build
@@ -95,7 +95,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1713373520
+export SOURCE_DATE_EPOCH=1714329141
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
